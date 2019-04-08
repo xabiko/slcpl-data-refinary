@@ -13,7 +13,8 @@
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
 
-	  <title>Query statistics client-side - 4.10</title>
+	  <title>SLCPL Branches</title>
+		<link rel="shortcut icon" type="image/png" href="/static/favicons.png"/>
 
 		<!-- Stylesheets -->
 	  <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css">
@@ -94,10 +95,11 @@
 
 	      // When the view loads, set up UI elements
 	      let layerList, predominanceLayer;
+				let chart, totalCount;
 
 	      view.when(function() {
 	        predominanceLayer = findLayerByTitle(
-	          "SLC_Tracts");
+	          "2010 Salt Lake City Census Tracts");
 	        predominanceLayer.outFields = ["*"];
 
 	        // view.whenLayerView(predominanceLayer).then(function(layerView) {
@@ -131,10 +133,11 @@
 							// newData = {values: newData};
 							// console.log(newData);
 							// console.log(Object.values(newData));
-							let chart, totalCount;
+							// let chart, totalCount;
 							totalCount = graphic.attributes.POP100;
-							console.log(totalCount);
-							const title = numberWithCommas(totalCount) + " people";
+							const title = numberWithCommas(totalCount) + " people total";
+
+							// console.log(response.results);
 
 							if (!chart) {
 			          // get the canvas element created in the LayerList
@@ -148,10 +151,10 @@
 			            type: "doughnut",
 			            data: {
 			              labels: ["Hispanic or Latino", "White",
-			                "Black or African American", "American Indian and Alaska Native	",
-			                "Asian", "Native Hawaiian and Other Pacific Islander",
-			                "Other Race", "White & Black or African American", "White & American Indian and Alaska Native",
-											"White & Asian", "White & Native Hawaiian and Other Pacific Islander"
+			                "Black or African American", "American Indian or Alaska Native	",
+			                "Asian", "Native Hawaiian or Other Pacific Islander",
+			                "Other Race", "White & Black or African American", "White & American Indian or Alaska Native",
+											"White & Asian", "White & Native Hawaiian or Other Pacific Islander"
 			              ],
 			              datasets: [{
 			                label: "Population by educational attainment",
@@ -165,7 +168,7 @@
 			              }]
 			            },
 			            options: {
-			              responsive: false,
+			              responsive: true,
 			              cutoutPercentage: 35,
 			              // Not an ArcGIS legend instance. This legend
 			              // is constructed for the pie chart, not the
@@ -195,10 +198,10 @@
 			          });
 			        } else {
 			          chart.options.title.text = title;
-			          chart.data.datasets[0].data = newData;
+			          chart.data.datasets[0].data = Object.values(newData);
 			          chart.update();
 			        }
-							console.log(chart);
+							// console.log(chart);
   					});
 					});
 
@@ -218,19 +221,17 @@
 	              item.panel = {
 	                content: [
 	                  [
-	                    "<b>Educational attainment</b> refers to the highest level of education that an individual has completed. ",
-	                    "This chart categorizes the population living within the current ",
-	                    "view extent by their educational attainment."
+	                    "<b>Population Breakdown:</b><p>Composition of races and ethnicities of the different Salt Lake City census tracts.</p>"
 	                  ].join(""),
 
 	                  document.createElement("canvas"),
 
-	                  [
-	                    "Notice that while one attainment level appears to dominate certain regions, it doesn't ",
-	                    "necessarily mean it represents the majority of the population. In fact, as ",
-	                    "you explore most areas, you will find the predominant educational attainment makes up ",
-	                    "just a fraction of the population due to the number of categories considered."
-	                  ].join("")
+	                  // [
+	                  //   "Notice that while one attainment level appears to dominate certain regions, it doesn't ",
+	                  //   "necessarily mean it represents the majority of the population. In fact, as ",
+	                  //   "you explore most areas, you will find the predominant educational attainment makes up ",
+	                  //   "just a fraction of the population due to the number of categories considered."
+	                  // ].join("")
 	                ],
 	                className: "esri-icon-pie-chart",
 	                open: item.visible
